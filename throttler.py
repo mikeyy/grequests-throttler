@@ -6,6 +6,10 @@ from requests import exceptions
 
 
 class Strategy(object):
+    class RetryBase(object):
+        def retry(self, *args, **kwargs):
+            return -1
+
     class Strict(object):
         def retry(self, try_count, exception):
             if isinstance(exception, exceptions.Timeout) or\
@@ -29,7 +33,7 @@ class Strategy(object):
                     return 10
                 return -1
 
-            
+
 class ThrottledSession(grequests.Session):
     """This class wraps Requests.session for rate-limiting, throttling, 
         and pooling. Built with Gevent and simplicity in mind.
@@ -48,7 +52,7 @@ class ThrottledSession(grequests.Session):
                                       kwargs.pop('requests_over_time',None),
         )
         self._retries = kwargs.pop('retries', 0)
-        self._strategy = kwargs.pop('strategy', Strategy.Strict())
+        self._strategy = kwargs.pop('strategy', Strategy.RetryBase())
         self._checkpoint = 0
         self._enqueued_request = Queue()
         self._close = False
