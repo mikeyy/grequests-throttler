@@ -7,7 +7,7 @@ from requests import exceptions
 
 class Strategy(object):
     class RetryBase(object):
-        def retry(self, *args, **kwargs):
+        def retry(self, x, y):
             return -1
 
     class Strict(object):
