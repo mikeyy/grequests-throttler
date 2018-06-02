@@ -78,13 +78,19 @@ class ThrottledSession(grequests.Session):
         except Exception, e:
             delay = self._strategy.retry(try_count, e)
             if delay > 0:
-                return self.send(try_count=try_count, delay=delay, *args, **kwargs) 
+                return self.send(try_count=try_count,
+                                 delay=delay,
+                                 *args,
+                                 **kwargs) 
             return None
 
     def send(self, *args, **kwargs):
         try_count = kwargs.pop('try_count', -1)
         delay = kwargs.pop('delay', self._delay)
-        request = self._pool.greenlet_class(self._send, try_count=try_count, *args, **kwargs)
+        request = self._pool.greenlet_class(self._send,
+                                            try_count=try_count,
+                                            *args,
+                                            **kwargs)
         self._enqueued_request.put((request, delay))
         return request.get()
     
