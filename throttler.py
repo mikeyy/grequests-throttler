@@ -6,6 +6,7 @@ from requests import exceptions
 
 
 class Strategy(object):
+    
     class RetryBase(object):
         def retry(self, x, y):
             return -1
