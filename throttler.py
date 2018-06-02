@@ -29,6 +29,7 @@ class Strategy(object):
                     return 10
                 return -1
 
+            
 class ThrottledSession(grequests.Session):
     """This class wraps Requests.session for rate-limiting, throttling, 
         and pooling. Built with Gevent and simplicity in mind.
